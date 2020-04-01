@@ -13,6 +13,7 @@ export default class App extends Component {
       LannisterCoat:'',
       BaratheonSecondSeat:'',
       BaratheonSecondAlias:'',
+      HouseStarkFounderUrl:'',
       HouseStarkFounder:'',
       CatelynStarkPOVBooks:''
 
@@ -92,7 +93,27 @@ export default class App extends Component {
        const responesSix = responses[5]
        const responesSeven = responses[6]
         this.setState({Margaeryplace:responseOne.data.born})
-        
+        this.setState({TargaryenRegion:responseTwo.data.region})
+        this.setState({LannisterCoat:responesThree.data.coatOfArms})
+        this.setState({BaratheonSecondSeat:responseFour.data.seats[1]})
+        this.setState({BaratheonSecondAlias:responseFive.data.aliases[1]})
+        this.setState({HouseStarkFounderUrl:responesSix.data.founder})
+        let url=this.state.HouseStarkFounderUrl;
+        const requestEight = axios(url, {
+          method: 'GET',
+          mode: 'no-cors',
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+          }
+        }).then(res => {          
+          this.setState({HouseStarkFounder: res.data.name})
+    
+        })
+        .catch(error => {
+          console.log('there is an eror', error)
+        })
+        this.setState({CatelynStarkPOVBooks:responesSeven.data.povBooks})
       // use/access the results 
 
     })).catch(errors => {
@@ -103,22 +124,23 @@ export default class App extends Component {
   render() {
     return (
       <div>
-       <h1>When was Jon Snow born?</h1>
-       {this.state.Margaeryplace}
+
        <h1>Where was Margaery Tyrell born?</h1>
+       {this.state.Margaeryplace}
 
        <h1>What region is House Targaryen in?</h1>
-
+        {this.state.TargaryenRegion}
        <h1>What's the coat of arms of House Lannister?</h1>
-
+        {this.state.BaratheonSecondSeat}
        <h1>What is the second seat of House Baratheon?</h1>
-
+        {this.state.BaratheonSecondSeat}
        <h1>What is Robert Baratheon's second alias?</h1>
-
+        {this.state.BaratheonSecondAlias}
        <h1>What's the name of the founder of House Stark? (You have to chain fetch requests!)</h1>
-
+        {this.state.HouseStarkFounder}
         <h1>What are the titles of Catelyn Stark's three POV books? (Look into Promise.all to request these simultaniously)</h1>
-
+        <ul>
+        </ul>
       </div>
     )
   }
